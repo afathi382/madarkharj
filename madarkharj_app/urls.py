@@ -3,16 +3,13 @@ from django.urls import path
 from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
 
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy
 
 urlpatterns = [
     
-    # path('swagger-ui/', TemplateView.as_view(
-    #     template_name='swagger-ui.html',
-    #     extra_context={'schema_url':'openapi-schema'}
-    # ), name='swagger-ui'),
     
-    # path('swagger/' , schema_view),
      path('openapi/', get_schema_view(
         title="madarkharj API",
         description="API developers hpoing to use our service"
@@ -22,6 +19,10 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url':'openapi-schema'}
     ), name='swagger-ui'),
+     
+     
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     
     path('comment/', CommentListCreate.as_view()),
