@@ -3,7 +3,7 @@ from django.urls import path
 from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
 
-from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Groups, ProfileListCreate, ProfileRetrieveUpdateDestroy, calculator
+from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy
 
 urlpatterns = [
     
@@ -42,7 +42,10 @@ urlpatterns = [
     path('profile/', ProfileListCreate.as_view()),
     path('profile/<pk>', ProfileRetrieveUpdateDestroy.as_view()),
     
-    path('calc/', calculator ),
+    
+    
+    path('profile_group_amount/', Profile_Group_amount.as_view()),  
+    path('profile_amount/', Profile_amount.as_view()),
     
     
 ]

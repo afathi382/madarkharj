@@ -4,8 +4,10 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from django.core.validators import validate_email
+from django.db.models import Q
+
+from .utils import factor_calculator, is_valid_uuid
 
 from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer
 
@@ -35,12 +37,7 @@ class CommentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     
     
 
-def is_valid_uuid(val):
-    try:
-        uuid.UUID(str(val))
-        return True
-    except ValueError:
-        return False
+
 
 
 
@@ -203,12 +200,70 @@ class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     
     
 
-def calculator(profile , group):
+# def calculator(profile , group):
     
-    factors=Factor.objects.filter(share_with__id__in= profile.id , group=group)
-    print(factors)
+#     factors=Factor.objects.filter(share_with__id__in= profile.id , group=group)
+#     print(factors)
     
-    return 
+#     return 
+
+
+
+
+class Profile_Group_amount(APIView):
+    
+    permission_classes = []
+    
+    def post(self, request):
+                
+        try:
+            profile_id=request.data['profile_id']
+            group_id=request.data['group_id']
+            if not is_valid_uuid(profile_id):
+                return Response('profile_id or group_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+            
+        except:
+            return Response('profile_id and group_id are required', status=status.HTTP_400_BAD_REQUEST)
+        else:
+            if (Profile.objects.filter(pk=profile_id).exists() and Group.objects.filter(pk=group_id).exists()):
+                factors=Factor.objects.filter(Q(share_with__id= profile_id , group= group_id) | Q(owner= profile_id , group=group_id)).distinct()
+                
+                profile_in_group_amount= factor_calculator(factors=factors, profile_id=profile_id)                                         
+                
+                return Response(profile_in_group_amount, status=status.HTTP_200_OK)
+            else:
+                return Response('profile or group does not exist', status=status.HTTP_404_NOT_FOUND)
+        
+
+
+class Profile_amount(APIView):
+    
+    permission_classes = []
+    
+    def post(self, request):
+                
+        try:
+            profile_id=request.data['profile_id']
+            if not is_valid_uuid(profile_id):
+                return Response('profile_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+            
+        except:
+            return Response('profile_id are required', status=status.HTTP_400_BAD_REQUEST)
+        else:
+            if Profile.objects.filter(pk=profile_id).exists():
+                factors=Factor.objects.filter(Q(share_with__id= profile_id ) | Q(owner= profile_id)).distinct()
+                
+                profile_amount= factor_calculator(factors=factors, profile_id=profile_id)                                       
+                
+                return Response(profile_amount, status=status.HTTP_200_OK)
+            else:
+                return Response('profile does not exist', status=status.HTTP_404_NOT_FOUND)
+            
+            
+            
+
+        
+    
     
     
     
