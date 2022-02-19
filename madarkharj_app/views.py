@@ -1,6 +1,5 @@
-import email
-import uuid
-from django.shortcuts import render
+
+from django.contrib.auth.models import User
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,7 +8,7 @@ from django.db.models import Q
 
 from .utils import factor_calculator, is_valid_uuid
 
-from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer
+from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer, RegistrationSerializer
 
 from .models import Comment, Factor, Group, Profile
 
@@ -200,15 +199,6 @@ class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     
     
 
-# def calculator(profile , group):
-    
-#     factors=Factor.objects.filter(share_with__id__in= profile.id , group=group)
-#     print(factors)
-    
-#     return 
-
-
-
 
 class Profile_Group_amount(APIView):
     
@@ -258,6 +248,14 @@ class Profile_amount(APIView):
                 return Response(profile_amount, status=status.HTTP_200_OK)
             else:
                 return Response('profile does not exist', status=status.HTTP_404_NOT_FOUND)
+            
+
+
+
+class RegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = []
             
             
             

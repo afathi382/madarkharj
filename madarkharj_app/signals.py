@@ -6,30 +6,30 @@ from .serializers import GroupSerializer, ProfileSerializer
 from .models import Group, Group_Profiles
 
 
-@receiver(post_save, sender=Group)
-def create_group_profiles(sender, instance, created , **kwargs):
+# @receiver(post_save, sender=Group)
+# def create_group_profiles(sender, instance, created , **kwargs):
     
     
-    print(instance.owner)
-    if created :
-        print(created)
+#     print(instance.owner)
+#     if created :
+#         print(created)
         
-        serializer = GroupSerializer(data=instance)  
-        # print(serializer.members)      
-        if serializer.is_valid():
-            print(serializer.owner)
-            print('-----')
-            print(serializer.members)
-            # serializer.save()
+#         serializer = GroupSerializer(data=instance)  
+#         # print(serializer.members)      
+#         if serializer.is_valid():
+#             print(serializer.owner)
+#             print('-----')
+#             print(serializer.members)
+#             # serializer.save()
            
       
-        print(instance.members)
-        print('--------')
+#         print(instance.members)
+#         print('--------')
         
         
         
-    else:
-        pass
+#     else:
+#         pass
     
 
 

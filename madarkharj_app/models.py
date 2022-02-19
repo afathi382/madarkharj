@@ -12,7 +12,7 @@ from django.db.models.deletion import CASCADE
 class Profile(models.Model):
     user= models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
-    email=models.EmailField(null=False, blank=False)
+    email=models.EmailField(unique=True)
     phone=models.CharField(max_length=11, null=True, blank=True)
     total_amount= models.FloatField(default=0, editable=False)
     
@@ -68,7 +68,7 @@ class Factor(models.Model):
     title = models.CharField(max_length=255)
     owner= models.ForeignKey(Profile, on_delete=models.SET_NULL, related_name='factor_owner', null=True, blank=True)
     price= models.FloatField(default=0)
-    group= models.ForeignKey(Group, on_delete=models.CASCADE, null=False, blank=False)
+    group= models.ForeignKey(Group, on_delete=models.CASCADE)
     share_with= models.ManyToManyField(Profile)   
     
     created = models.DateTimeField(auto_now_add=True)

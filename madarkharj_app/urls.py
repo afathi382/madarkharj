@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy
+from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy, RegistrationView
 
 urlpatterns = [
     
@@ -21,8 +21,8 @@ urlpatterns = [
     ), name='swagger-ui'),
      
      
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     
     path('comment/', CommentListCreate.as_view()),
@@ -43,10 +43,12 @@ urlpatterns = [
     path('profile/', ProfileListCreate.as_view()),
     path('profile/<pk>', ProfileRetrieveUpdateDestroy.as_view()),
     
-    
-    
+    # factor calculations 
     path('profile_group_amount/', Profile_Group_amount.as_view()),  
     path('profile_amount/', Profile_amount.as_view()),
+    
+    
+    path('register/', RegistrationView.as_view()),
     
     
 ]
