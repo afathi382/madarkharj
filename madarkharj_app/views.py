@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from django.core.validators import validate_email
 from django.db.models import Q
 
+from rest_framework.schemas.openapi import AutoSchema
+
 from .utils import factor_calculator, is_valid_uuid
 
 from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer, RegistrationSerializer
@@ -16,20 +18,20 @@ from .models import Comment, Factor, Group, Profile
 # Create your views here.
 
 class CommentListCreate(generics.ListCreateAPIView):
+    schema = AutoSchema(
+        tags=['Comments'],
+    )
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = []
     
-    # def get_queryset(self):
-    #     factor_id=self.request.query_params['pk']
-    #     print(factor_id)
-        
-    #     return get_object_or_404(Comment.objects.filter(factor=factor_id))
-        
     
 
 
 class CommentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    schema = AutoSchema(
+        tags=['Comments'],
+    )
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = []
@@ -37,10 +39,10 @@ class CommentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     
 
 
-
-
-
 class Factor_Comments(APIView):
+    schema = AutoSchema(
+        tags=['Comments'],
+    )
     
     permission_classes = []
     
@@ -64,13 +66,20 @@ class Factor_Comments(APIView):
         
     
     
+    
 class FactorListCreate(generics.ListCreateAPIView):
+    schema = AutoSchema(
+        tags=['Factors'],
+    )
     queryset = Factor.objects.all()
     serializer_class = FactorSerializer
     permission_classes = []
     
 
 class FactorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    schema = AutoSchema(
+        tags=['Factors'],
+    )
     queryset = Factor.objects.all()
     serializer_class = FactorSerializer
     permission_classes = []
@@ -79,6 +88,9 @@ class FactorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     
 
 class Group_Factors(APIView):
+    schema = AutoSchema(
+        tags=['Factors'],
+    )
     
     permission_classes = []
     
@@ -105,6 +117,9 @@ class Group_Factors(APIView):
 
 
 class GroupListCreate(generics.ListCreateAPIView):
+    schema = AutoSchema(
+        tags=['Groups'],
+    )
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = []
@@ -153,6 +168,9 @@ class GroupListCreate(generics.ListCreateAPIView):
 
 
 class GroupRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    schema = AutoSchema(
+        tags=['Groups'],
+    )
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = []
@@ -161,6 +179,9 @@ class GroupRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
 
 class Profile_Groups(APIView):
+    schema = AutoSchema(
+        tags=['Groups'],
+    )
     
     permission_classes = []
     
@@ -187,12 +208,18 @@ class Profile_Groups(APIView):
  
 
 class ProfileListCreate(generics.ListCreateAPIView):
+    schema = AutoSchema(
+        tags=['Profiles'],
+    )
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = []
          
  
 class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    schema = AutoSchema(
+        tags=['Profiles'],
+    )
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = []
@@ -201,7 +228,9 @@ class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
 
 class Profile_Group_amount(APIView):
-    
+    schema = AutoSchema(
+        tags=['Balance calculations'],
+    )
     permission_classes = []
     
     def post(self, request):
@@ -227,6 +256,9 @@ class Profile_Group_amount(APIView):
 
 
 class Profile_amount(APIView):
+    schema = AutoSchema(
+        tags=['Balance calculations'],
+    )
     
     permission_classes = []
     
@@ -253,9 +285,14 @@ class Profile_amount(APIView):
 
 
 class RegistrationView(generics.CreateAPIView):
+    schema = AutoSchema(
+        tags=['authentication'],
+    )
     queryset = User.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = []
+    
+    
             
             
             
