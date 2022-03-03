@@ -5,14 +5,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.validators import validate_email
 from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.schemas.openapi import AutoSchema
 
 from .utils import factor_calculator, is_valid_uuid
 
-from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer, RegistrationSerializer
+from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, ProfileSerializer
 
 from .models import Comment, Factor, Group, Profile
+
 
 
 # Create your views here.
@@ -73,7 +75,7 @@ class FactorListCreate(generics.ListCreateAPIView):
     )
     queryset = Factor.objects.all()
     serializer_class = FactorSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
 
 class FactorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -155,7 +157,6 @@ class GroupListCreate(generics.ListCreateAPIView):
            
             serializer = GroupSerializer(data=group_data)        
             if serializer.is_valid():
-               
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -174,6 +175,47 @@ class GroupRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = []
+    
+    def put(self, request, *args, **kwargs):
+        
+        try:
+            true_members=[]
+            for member in request.data['members']:
+                
+                if is_valid_uuid(member): 
+                    true_members.append(member)
+                elif validate_email(member) is None:
+                    if not Profile.objects.filter(email= member).exists():
+                        serializer = ProfileSerializer(data={'name': member.split("@")[0],'email': member})
+                        
+                        if serializer.is_valid():
+                            print(serializer)
+                            serializer.save()
+                            true_members.append(str(Profile.objects.get(email=member).id))
+                    elif Profile.objects.filter(email= member).exists():
+                        true_members.append(str(Profile.objects.get(email=member).id))
+                    
+                else:
+                    return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST) 
+          
+               
+        except:
+            return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST)
+        else:
+            group_data=request.data
+            instance=Group.objects.get(id=group_data['id'])
+            group_data['members']= true_members
+           
+            serializer = GroupSerializer(instance, data=group_data)        
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                  
+       
+        return Response(request.data) 
+
     
     
 
@@ -283,14 +325,14 @@ class Profile_amount(APIView):
             
 
 
-
-class RegistrationView(generics.CreateAPIView):
-    schema = AutoSchema(
-        tags=['authentication'],
-    )
-    queryset = User.objects.all()
-    serializer_class = RegistrationSerializer
-    permission_classes = []
+# Jwt RegistrationView
+# class RegistrationView(generics.CreateAPIView):
+#     schema = AutoSchema(
+#         tags=['authentication'],
+#     )
+#     queryset = User.objects.all()
+#     serializer_class = RegistrationSerializer
+#     permission_classes = []
     
     
             

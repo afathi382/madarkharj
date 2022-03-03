@@ -1,11 +1,10 @@
 
-from django.urls import path
+from django.urls import path, include
 from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
 
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy, RegistrationView
+from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy
 
 urlpatterns = [
     
@@ -20,10 +19,7 @@ urlpatterns = [
         extra_context={'schema_url':'openapi-schema'}
     ), name='swagger-ui'),
      
-     
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+         
     
     path('comment/', CommentListCreate.as_view()),
     path('comment/<pk>', CommentRetrieveUpdateDestroy.as_view()),
@@ -47,8 +43,9 @@ urlpatterns = [
     path('profile_group_amount/', Profile_Group_amount.as_view()),  
     path('profile_amount/', Profile_amount.as_view()),
     
-    
-    path('register/', RegistrationView.as_view()),
+        
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     
     
 ]
