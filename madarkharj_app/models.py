@@ -53,14 +53,6 @@ class Group(models.Model):
         return self.name
 
 
-class Group_Profiles(models.Model):
-    group= models.ForeignKey(Group, on_delete=models.CASCADE)
-    profile= models.ForeignKey(Profile, on_delete=models.CASCADE)
-    amount= models.FloatField(default=0)
-      
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
-    
 
     
 

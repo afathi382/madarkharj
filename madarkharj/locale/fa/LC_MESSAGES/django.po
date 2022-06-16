@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-04 20:41+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: .\madarkharj\madarkharj_app\views.py:58
+msgid "factor_id is not valid uuid"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:61
+msgid "factor_id is required"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:68
+msgid "factor does not exist"
+msgstr "فاکتور وجود ندارد"
+
+#: .\madarkharj\madarkharj_app\views.py:106
+msgid "group_id is not valid uuid"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:109
+msgid "group_id is required"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:116
+msgid "group does not exist"
+msgstr "گروه وجود ندارد"
+
+#: .\madarkharj\madarkharj_app\views.py:150
+#: .\madarkharj\madarkharj_app\views.py:154
+#: .\madarkharj\madarkharj_app\views.py:200
+#: .\madarkharj\madarkharj_app\views.py:204
+msgid "member or email is not valid"
+msgstr "کاربر معتبر نمی باشد"
+
+#: .\madarkharj\madarkharj_app\views.py:237
+#: .\madarkharj\madarkharj_app\views.py:313
+msgid "profile_id is not valid uuid"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:240
+msgid "profile_id is required"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:285
+msgid "profile_id or group_id is not valid uuid"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:288
+msgid "profile_id and group_id are required"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:297
+msgid "profile or group does not exist"
+msgstr "کاربر یا گروه وجود ندارد"
+
+#: .\madarkharj\madarkharj_app\views.py:316
+msgid "profile_id are required"
+msgstr ""
+
+#: .\madarkharj\madarkharj_app\views.py:325
+msgid "profile does not exist"
+msgstr "کاربر وجود ندارد"

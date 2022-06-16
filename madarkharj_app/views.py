@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.core.validators import validate_email
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework.schemas.openapi import AutoSchema
 
@@ -25,7 +26,7 @@ class CommentListCreate(generics.ListCreateAPIView):
     )
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     
 
@@ -36,7 +37,7 @@ class CommentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     )
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     
 
@@ -46,7 +47,7 @@ class Factor_Comments(APIView):
         tags=['Comments'],
     )
     
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     # get {"factor_id": "8927e8a0-ee37-4b22-91b5-440bac1a52e8"} and post comments of this factor
     def post(self, request):
@@ -54,17 +55,17 @@ class Factor_Comments(APIView):
         try:
             factor_id=request.data['factor_id']
             if not is_valid_uuid(factor_id):
-                return Response('factor_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+                return Response(_('factor_id is not valid uuid'), status=status.HTTP_400_BAD_REQUEST)  
             
         except:
-            return Response('factor_id is required', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('factor_id is required'), status=status.HTTP_400_BAD_REQUEST)
         else:
             if Factor.objects.filter(pk=factor_id).exists():
                 comments=Comment.objects.filter(factor=factor_id)
                 serializer= CommentSerializer(comments, many= True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response('factor does not exist', status=status.HTTP_404_NOT_FOUND)
+                return Response(_('factor does not exist'), status=status.HTTP_404_NOT_FOUND)
         
     
     
@@ -84,7 +85,7 @@ class FactorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     )
     queryset = Factor.objects.all()
     serializer_class = FactorSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     
     
@@ -94,7 +95,7 @@ class Group_Factors(APIView):
         tags=['Factors'],
     )
     
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     # get {"group_id": "4bf93138-450c-4d35-9d3d-7b5293abd4e6"} and post factors of this group
     def post(self, request):
@@ -102,17 +103,17 @@ class Group_Factors(APIView):
         try:
             group_id=request.data['group_id']
             if not is_valid_uuid(group_id):
-                return Response('group_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+                return Response(_('group_id is not valid uuid'), status=status.HTTP_400_BAD_REQUEST)  
             
         except:
-            return Response('group_id is required', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('group_id is required'), status=status.HTTP_400_BAD_REQUEST)
         else:
             if Group.objects.filter(pk=group_id).exists():
                 factors=Factor.objects.filter(group=group_id)
                 serializer= FactorSerializer(factors, many= True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response('group does not exist', status=status.HTTP_404_NOT_FOUND)
+                return Response(_('group does not exist'), status=status.HTTP_404_NOT_FOUND)
         
     
     
@@ -139,18 +140,18 @@ class GroupListCreate(generics.ListCreateAPIView):
                         serializer = ProfileSerializer(data={'name': member.split("@")[0],'email': member})
                         
                         if serializer.is_valid():
-                            print(serializer)
+
                             serializer.save()
                             true_members.append(str(Profile.objects.get(email=member).id))
                     elif Profile.objects.filter(email= member).exists():
                         true_members.append(str(Profile.objects.get(email=member).id))
                     
                 else:
-                    return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST) 
+                    return Response(_('member or email is not valid'), status=status.HTTP_400_BAD_REQUEST) 
           
                
         except:
-            return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('member or email is not valid'), status=status.HTTP_400_BAD_REQUEST)
         else:
             group_data=request.data
             group_data['members']= true_members
@@ -174,7 +175,7 @@ class GroupRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     )
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     def put(self, request, *args, **kwargs):
         
@@ -196,11 +197,11 @@ class GroupRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
                         true_members.append(str(Profile.objects.get(email=member).id))
                     
                 else:
-                    return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST) 
+                    return Response(_('member or email is not valid'), status=status.HTTP_400_BAD_REQUEST) 
           
                
         except:
-            return Response('member or email is not valid', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('member or email is not valid'), status=status.HTTP_400_BAD_REQUEST)
         else:
             group_data=request.data
             instance=Group.objects.get(id=group_data['id'])
@@ -225,7 +226,7 @@ class Profile_Groups(APIView):
         tags=['Groups'],
     )
     
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     # get {"profile_id": "bb40d81f-1a6c-40cb-99ee-a80cdc177a65"} and post groups of this profile
     def post(self, request):
@@ -233,10 +234,10 @@ class Profile_Groups(APIView):
         try:
             profile_id=request.data['profile_id']
             if not is_valid_uuid(profile_id):
-                return Response('profile_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+                return Response(_('profile_id is not valid uuid'), status=status.HTTP_400_BAD_REQUEST)  
             
         except:
-            return Response('profile_id is required', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('profile_id is required'), status=status.HTTP_400_BAD_REQUEST)
         else:
             if Profile.objects.filter(pk=profile_id).exists():
                 groups=Group.objects.filter(members=profile_id)
@@ -255,7 +256,7 @@ class ProfileListCreate(generics.ListCreateAPIView):
     )
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
          
  
 class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -264,7 +265,7 @@ class ProfileRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     )
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     
 
@@ -273,7 +274,7 @@ class Profile_Group_amount(APIView):
     schema = AutoSchema(
         tags=['Balance calculations'],
     )
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
                 
@@ -281,10 +282,10 @@ class Profile_Group_amount(APIView):
             profile_id=request.data['profile_id']
             group_id=request.data['group_id']
             if not is_valid_uuid(profile_id):
-                return Response('profile_id or group_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+                return Response(_('profile_id or group_id is not valid uuid'), status=status.HTTP_400_BAD_REQUEST)  
             
         except:
-            return Response('profile_id and group_id are required', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('profile_id and group_id are required'), status=status.HTTP_400_BAD_REQUEST)
         else:
             if (Profile.objects.filter(pk=profile_id).exists() and Group.objects.filter(pk=group_id).exists()):
                 factors=Factor.objects.filter(Q(share_with__id= profile_id , group= group_id) | Q(owner= profile_id , group=group_id)).distinct()
@@ -293,7 +294,7 @@ class Profile_Group_amount(APIView):
                 
                 return Response(profile_in_group_amount, status=status.HTTP_200_OK)
             else:
-                return Response('profile or group does not exist', status=status.HTTP_404_NOT_FOUND)
+                return Response(_('profile or group does not exist'), status=status.HTTP_404_NOT_FOUND)
         
 
 
@@ -302,17 +303,17 @@ class Profile_amount(APIView):
         tags=['Balance calculations'],
     )
     
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
                 
         try:
             profile_id=request.data['profile_id']
             if not is_valid_uuid(profile_id):
-                return Response('profile_id is not valid uuid', status=status.HTTP_400_BAD_REQUEST)  
+                return Response(_('profile_id is not valid uuid'), status=status.HTTP_400_BAD_REQUEST)  
             
         except:
-            return Response('profile_id are required', status=status.HTTP_400_BAD_REQUEST)
+            return Response(_('profile_id are required'), status=status.HTTP_400_BAD_REQUEST)
         else:
             if Profile.objects.filter(pk=profile_id).exists():
                 factors=Factor.objects.filter(Q(share_with__id= profile_id ) | Q(owner= profile_id)).distinct()
@@ -321,18 +322,10 @@ class Profile_amount(APIView):
                 
                 return Response(profile_amount, status=status.HTTP_200_OK)
             else:
-                return Response('profile does not exist', status=status.HTTP_404_NOT_FOUND)
+                return Response(_('profile does not exist'), status=status.HTTP_404_NOT_FOUND)
             
 
 
-# Jwt RegistrationView
-# class RegistrationView(generics.CreateAPIView):
-#     schema = AutoSchema(
-#         tags=['authentication'],
-#     )
-#     queryset = User.objects.all()
-#     serializer_class = RegistrationSerializer
-#     permission_classes = []
     
     
             

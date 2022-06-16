@@ -6,6 +6,9 @@ from django.views.generic import TemplateView
 
 from .views import CommentListCreate, CommentRetrieveUpdateDestroy, Factor_Comments, FactorListCreate, FactorRetrieveUpdateDestroy, Group_Factors, GroupListCreate, GroupRetrieveUpdateDestroy, Profile_Group_amount, Profile_Groups, Profile_amount, ProfileListCreate, ProfileRetrieveUpdateDestroy
 
+
+from dj_rest_auth.views import PasswordResetConfirmView
+
 urlpatterns = [
     
     
@@ -46,6 +49,7 @@ urlpatterns = [
         
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('dj-rest-auth/password/reset/confirm/<uuid>/<Token>', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     
     
 ]
