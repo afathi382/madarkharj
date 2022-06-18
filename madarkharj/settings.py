@@ -45,8 +45,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'dj_rest_auth.registration',
+    
     'madarkharj_app',
+    
+    
     
 ]
 
@@ -149,11 +153,35 @@ SITE_ID = 1
 STATIC_URL = '/static/'
 
 
+SOCIALACCOUNT_PROVIDERS = {
+"google": {
+    # For each OAuth based provider, either add a ``SocialApp``
+    # (``socialaccount`` app) containing the required client
+    # credentials, or list them here:
+    "APP": {
+        "client_id": config('GOOGLE_CLIENT_ID'),
+        "secret": config('GOOGLE_SECRET_KEY'),
+        
+    },
+  
+}}
+
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
-# EMAIL_HOST = '.gmail.com'
-# EMAIL_HOST_USER = 'youremail@gmail.com'
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_PORT = 
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'madarkharj1@gmail.com'
+# EMAIL_HOST_PASSWORD = 'na@af1234560'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com '
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER ='madarkharj1@gmail.com'
+# EMAIL_HOST_PASSWORD = 'na@af1234560'
+# # ACCOUNT_EMAIL_VERIFICATION = 'none'
+# DEFAULT_FROM_EMAIL = 'madarkharj1@gmail.com'

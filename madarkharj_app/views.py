@@ -16,6 +16,12 @@ from .serializers import CommentSerializer, FactorSerializer, GroupSerializer, P
 
 from .models import Comment, Factor, Group, Profile
 
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from dj_rest_auth.registration.views import SocialLoginView
+
+class GoogleLogin(SocialLoginView): # if you want to use Implicit Grant, use this
+    adapter_class = GoogleOAuth2Adapter
+
 
 
 # Create your views here.
@@ -125,7 +131,7 @@ class GroupListCreate(generics.ListCreateAPIView):
     )
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
         
